@@ -22,3 +22,18 @@ const countBitsSingleLine = function (n) {
 
   //here we are performing similar steps as above but we are removing the 0's from the binary representation string and then joining the remaining values which are the 1's into an array and then using .length() to get then number of 1's which will give us our result.
 };
+/*------------------------------------------------------------------------------------------------------*/
+
+/*------------------------------------------------------------------------------------------------------*/
+
+/* Write a Code-Golf Scoring Function:
+Problem:
+Your job is to write a function to score a game of code golf by these rules. The rules for scoring are as follows:
+
+all whitespace characters are counted as 0 strokes
+consecutive alphanumeric characters (includes underscore) are grouped together, and the group counts as 1 stroke
+non-alphanumeric characters (except underscore) are each counted as 1 stroke
+Your function will be passed a string. You should calculate the number of strokes from the string and return the score as an integer.
+
+*/
+/*------------------------------------------------------------------------------------------------------*/
