@@ -61,29 +61,41 @@ The results must be placed in the first part of the array nums.  If there are k 
 Return k after placing the final result in the first k slots of nums
 */
 
-//nums.length <= 0
+//nums.length >= 0
 //nums is sorted in non-decreasing order
 //unique elements should appear only once
 
 //have an array of numbers
 //empty array
-//loop through array of fnumbers
+//loop through array of numbers
 //compare values for duplicates
 //if nums[i] === nums[i-1] && empty.array ! includes nums[i]
 //empty array .push(nums[i])
 //k = empty array .length
 //return k
 
-const removeDuplicates = function (nums) {
-  const noDuplicates = nums.splice(0, nums.length, ...new Set(nums));
+const removeDuplicatesLoop = function (nums) {
+  const results = [];
 
-  return noDuplicates.length;
+  for (let i = 0; i < nums.length; i++) {
+    if (nums[i] !== nums[i + 1] && !results.includes(nums[i])) {
+      results.push(nums[i]);
+    }
+  }
+  return results.length;
+};
+
+//alternative solution
+
+const removeDuplicates = function (nums) {
+  const noDuplicatesSet = new Set(nums);
+  const noDuplicatesArr = [...noDuplicatesSet];
+
+  return noDuplicatesArr.length;
 
   //I recently learned about Sets so I thought this would be a great opportunity to use this new knowledge
   //since Sets only store unique values I used this to create a copy of the nums array
-  //using splice method on the nums array we:
-  //begin at index 0, and replace nums.length number of elements with the new Set(nums)
-  //we have to use the spread operator in order to extract the values from the Set
+  // I then created a new array and used the spread operator to pull those values from noDupplicatesSet to add them to the new noDuplicatesArr
 };
 
 //alternative way to solve problem using a for loop:
@@ -153,33 +165,31 @@ const removeElement = function (nums, val) {
 //then return the digits array
 
 const plusOne = function (digits) {
-
-    for(let i= digits.length - 1; i >= 0; i--0){
-        digits[i] = (digits[i] + 1) % 10;
-        if(digits[i]){
-            return digits
-        }
+  for (let i = digits.length - 1; i >= 0; i--) {
+    digits[i] = (digits[i] + 1) % 10;
+    if (digits[i]) {
+      return digits;
     }
-    digits.unshift(1);
+  }
+  digits.unshift(1);
 
-    return digits
+  return digits;
 };
 
 //alternate solution:
 
-const plustOne2 = function(digits){
-
-    for(let i=digits.length-1; i >=0; i--){
-        digits[i]++
-        if(digits[i] > 9){
-            digits[i] = 0
-        } else{
-            return digits
-        }
+const plustOne2 = function (digits) {
+  for (let i = digits.length - 1; i >= 0; i--) {
+    digits[i]++;
+    if (digits[i] > 9) {
+      digits[i] = 0;
+    } else {
+      return digits;
     }
-    digits.unshift(1);
-    return digits;
-}
+  }
+  digits.unshift(1);
+  return digits;
+};
 /*------------------------------------------------------------------------------------------------------*/
 
 /**
@@ -191,25 +201,160 @@ Each time you can either climb 1 or 2 steps. In how many distinct ways can you c
  This sequence is the that each number is the sum of the preceding two numbers (Fn = Fn-1 + Fn-2) ex Fn = 3 then F3 = (F2) + (F1) = (2) + (1) = 3... for F5 = (F4) (F3) = (5) + (3) = 8 
  */
 
- const climbStairs = function(n) {
-     if(n < 3) return n;
-    //if n === 0, 1, 2 then the number of ways to climb the stairs is = to n
+const climbStairs = function (n) {
+  if (n < 3) return n;
+  //if n === 0, 1, 2 then the number of ways to climb the stairs is = to n
 
-    let first = 1;
-    let second = 2;
-    //must initialize two variables - first and second
-    //will set equal to 1 and 2; so we will be using these numbers to add up to the current number
+  let first = 1;
+  let second = 2;
+  //must initialize two variables - first and second
+  //will set equal to 1 and 2; so we will be using these numbers to add up to the current number
 
-    for(let i=2; i <n; i ++){
-        let current = first + second;
-        first = second;
-        second = current
-    }
-    //starting at 2 and going until we reach n, we can have a for loop incrementing 1 number at a time
-    //inside this loop initiate a new current variable which will store the sum of first and second
-    //first will then == second and second will then equal the current value of current
-    return second;
-    //once the loops ends will we return whatever value second is (set equal to the current value of current)
- }
+  for (let i = 2; i < n; i++) {
+    let current = first + second;
+    first = second;
+    second = current;
+  }
+  //starting at 2 and going until we reach n, we can have a for loop incrementing 1 number at a time
+  //inside this loop initiate a new current variable which will store the sum of first and second
+  //first will then == second and second will then equal the current value of current
+  return second;
+  //once the loops ends will we return whatever value second is (set equal to the current value of current)
+};
 
 /*------------------------------------------------------------------------------------------------------*/
+/**
+ * Roman numerals are represented by seven different symbols: I, V, X, L, C, D and M.
+ * 
+ * Symbol       Value
+I             1
+V             5
+X             10
+L             50
+C             100
+D             500
+M             1000
+
+Roman numerals are usually written largest to smallest from left to right. However, the numeral for four is not IIII. Instead, the number four is written as IV. Because the one is before the five we subtract it making four. The same principle applies to the number nine, which is written as IX. There are six instances where subtraction is used:
+
+I can be placed before V (5) and X (10) to make 4 and 9. 
+X can be placed before L (50) and C (100) to make 40 and 90. 
+C can be placed before D (500) and M (1000) to make 400 and 900.
+
+Given a roman numeral, convert it to an integer.
+
+ */
+
+//provided string will only contain roman numerals
+//string length >=1
+
+//normally written greatest --> smallest
+//if smaller RN is on L --> subtract that from the RN on R
+//loop through string and add each value to a total
+
+const symbols = {
+  I: 1,
+  V: 5,
+  X: 10,
+  L: 50,
+  C: 100,
+  D: 500,
+  M: 1000,
+};
+
+const numeralToNumber = function (numeral) {
+  let number = 0;
+
+  for (let i = 0; i < numeral.length; i++) {
+    if (
+      symbols[numeral[i]] < symbols[numeral[i + 1]]
+        ? (number -= symbols[numeral[i]])
+        : (number += symbols[numeral[i]])
+    );
+  }
+  return number;
+};
+console.log(numeralToNumber("MCMXCIV"));
+
+/*------------------------------------------------------------------------------------------------------*/
+/*------------------------------------------------------------------------------------------------------*/
+/**
+ * Write a function to find the longest common prefix string amongst an array of strings.
+ * If there is no common prefix, return an empty string "".
+ */
+
+//array length >= 1;
+//array[i].length >= 0;
+//array strings are all lowercase letters
+
+//edge cases = if empty array return ''
+
+//variable to hold array[0]
+//longest potential prefix string would be array[0]
+
+//compare array[0] to the next element in the array
+//if array[i] (1).indexOf(array[0] != 0)  --- won't know exactly how many times it will loop through so make a while loop?
+//array[0] = array[0].slice(0, array[0].length -1)
+//if array[0] eventually becomes empty then there is not matching prefix - return ''
+
+//else (array[i] does containt the substring - then that value is now the longestCommonPrefix)
+//after looping through the array return the remaining value of array[0]
+
+const longestCommonPrefix = function (words) {
+  if (!words.length) return "";
+
+  let prefix = words[0];
+
+  for (const word of words) {
+    while (word.indexOf(prefix) != 0) {
+      prefix.slice(0, prefix.length - 1);
+
+      if (prefix === "") {
+        break;
+      }
+    }
+  }
+  return prefix;
+};
+
+/*------------------------------------------------------------------------------------------------------*/
+/*------------------------------------------------------------------------------------------------------*/
+
+/**
+ * Given a string s containing just the characters '(', ')', '{', '}', '[' and ']', determine if the input string is valid.
+
+An input string is valid if:
+
+Open brackets must be closed by the same type of brackets.
+Open brackets must be closed in the correct order.
+ 
+ */
+
+//string only contains above characters
+//must open bracket must be first and must close in order with same type of bracket
+//loop through string
+//depending on type of bracket, will push it's compliment to an empty array to store
+//once we come across a closed bracket, compare to the last value of the array (array.pop())
+//if not equal return false
+//edge cases: string.length = 0; string.length % 2 != 0
+
+const correctBracket = function (string) {
+  if ((string.length = 0 || string.length % 2 != 0)) return false;
+
+  const arr = [];
+
+  for (let i = 0; i < string.length; i++) {
+    if (string[i] === "(") {
+      arr.push(")");
+    } else if (string[i] === "[") {
+      arr.push("]");
+    } else if (string[i] === "{") {
+      arr.push("}");
+    } else {
+      if (string[i] !== arr.pop()) {
+        return false;
+      }
+    }
+  }
+  return arr.length === 0;
+};
