@@ -358,3 +358,144 @@ const correctBracket = function (string) {
   }
   return arr.length === 0;
 };
+/*------------------------------------------------------------------------------------------------------*/
+//118. Pascal's Triangle:
+/**
+ *Given an integer numRows, return the first numRows of Pascal's triangle.
+ */
+
+//n = number of rows in triangle (top = 1, bottom = n)
+//each number is the sum of the two numbers directly above it
+
+//arr[i][0] always === 1; arr[i][i] always === 1;
+//for loop for [i] row
+//in this loop declare each row as an empty array = []
+//will be nested arrays;
+//will need to get arr[i][j] via a nested for loop
+//arr[i][j] = sum of the two numbers directly above it (subtract 1 from the row) and 1 from j?
+
+//return the array
+
+const pascalsTriangle = function (num) {
+  const arr = [];
+
+  for (let i = 0; i < num; i++) {
+    arr[i] = []; //establishes the row as an empty array
+    arr[i][0] = 1; //first element of each row equals 1;
+    arr[i][i] = 1; //last element of each row equals 1;
+
+    for (let j = 1; j < i; j++) {
+      arr[i][j] = arr[i - 1][j - 1] + arr[i - 1][j];
+    }
+  }
+  return arr;
+};
+/*------------------------------------------------------------------------------------------------------*/
+//119. Pascal's Triangle 2:
+/**
+ *Given an integer rowIndex, return the rowIndexth (0-indexed) row of the Pascal's triangle.
+
+ n = number of rows in triangle (top = 1, bottom = n)
+each number is the sum of the two numbers directly above it
+ */
+
+//given the index of the row -- must return row at that index of the Triangle (3rd row (index) -- 4th row of triangle) = [1, 3, 3, 1])
+
+const pascalsTriangle2 = function (rowIndex) {
+  let row = [1];
+  //the row always begins with 1, and will always end with 1
+  //row[0][0], and row[i][i](last element)
+
+  for (let i = 1; i <= rowIndex; i++) {
+    //access the position of each row using another variable [j]
+    for (let j = i; j > 0; j--) {
+      //set j to the index(length) of the row and work backwards
+      if (j === i) {
+        row[j] = 1;
+        //since row[i][j] in the triangle is an element in each row
+        //if j===i then row[i][i] will be equal to the last element of each row
+        //so this element should be = 1
+      } else {
+        row[j] = row[j - 1] + row[j];
+        //and j-1 is the position before value, j is position 'after' value because the sum of the two values above it = row[j]
+        //logging each step to the console is helpful to see this process
+      }
+    }
+  }
+  return row;
+};
+/*------------------------------------------------------------------------------------------------------*/
+/**
+ *Given an input string s, reverse the order of the words.
+
+A word is defined as a sequence of non-space characters. The words in s will be separated by at least one space.
+
+Return a string of the words in reverse order concatenated by a single space.
+
+Note that s may contain leading or trailing spaces or multiple spaces between two words. The returned string should only have a single space separating the words. Do not include any extra spaces.
+ */
+
+//input string 's' has at least 1 word
+//if s.length === 1 return s
+
+//s.split(' ') into array
+//create empty array to push only words into
+//iterate through array checking if empty string or not
+//if not empty push into empty array
+//arr.join(' ')
+//return newString
+
+const reverseWords = function (s) {
+  let wordArray = s.split(" ").reverse();
+  const strArray = [];
+
+  for (let i = 0; i < wordArray.length; i++) {
+    if (wordArray[i].length > 0) {
+      strArray.push(wordArray[i]);
+    }
+  }
+  return strArray.join(" ");
+};
+//reversing words using method chaining:
+
+const reverseWordsChaining = function (s) {
+  return s.split(" ").filter(Boolean).reverse().join(" ");
+};
+
+//challenge - reversing words without split or reverse methods:
+
+/**------------------------------------------------------------------------------------------------------*/
+
+/**
+ *You are given an array prices where prices[i] is the price of a given stock on the ith day.
+
+You want to maximize your profit by choosing a single day to buy one stock and choosing a different day in the future to sell that stock.
+
+Return the maximum profit you can achieve from this transaction. If you cannot achieve any profit, return 0.
+ */
+
+//variables: min = prices[0]; profit = 0
+//iterate through array with i=1
+//compare prices[i] and min
+//if min > prices[i] --> min = prices[i]
+//else
+//if prices[i] - min > profit
+//profit ==  prices[i] - min
+
+//return profit
+
+const maxProfit = function (prices) {
+  let min = prices[0];
+  let profit = 0;
+
+  for (let i = 1; i < prices.length; i++) {
+    if (min > prices[i]) {
+      min = prices[i];
+    } else {
+      if (prices[i] - min > profit) {
+        profit = prices[i] - min;
+      }
+    }
+  }
+  return profit;
+};
