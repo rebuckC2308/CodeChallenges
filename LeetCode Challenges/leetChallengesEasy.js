@@ -289,3 +289,115 @@ Return k after placing the final result in the first k slots of nums.
 
 Do not allocate extra space for another array. You must do this by modifying the input array in-place with O(1) extra memory.
  */
+
+const removeElement = function (nums, val) {
+  if (nums.length === 0) {
+    return 0;
+  }
+
+  let newArr = [];
+
+  for (let i = 0; i < nums.length; i++) {
+    if (nums[i] !== val) {
+      newArr.push(nums[i]);
+    }
+  }
+  nums.length = 0;
+  newArr.forEach((num) => {
+    nums.push(num);
+  });
+  return nums.length;
+};
+
+// -----------------------------------------------------------------------------------
+
+/**
+   * Challenge #28 Implement strStr() -- indexOf():
+   *Return the index of the first occurrence of needle in haystack, or -1 if needle is not part of haystack.
+  
+  Clarification:
+  
+  What should we return when needle is an empty string? This is a great question to ask during an interview.
+  
+  For the purpose of this problem, we will return 0 when needle is an empty string. This is consistent to C's strstr() and Java's indexOf().
+   */
+
+const strStr = function (haystack, needle) {
+  return haystack.indexOf(needle);
+};
+
+// -----------------------------------------------------------------------------------
+
+/**
+   * Challenge #35 Search Insert Position:
+   * Given a sorted array of distinct integers and a target value, return the index if the target is found. If not, return the index where it would be if it were inserted in order.
+  
+  You must write an algorithm with O(log n) runtime complexity.
+  
+   */
+
+// const searchInsert = function (nums, target) {
+//   let index;
+
+//   for (let i = 0; i < nums.length; i++) {
+//     if (nums[i] === target) {
+//       return i;
+//     } else if (target < nums[i]) {
+//       return i;
+//     }
+//   }
+// };
+
+const searchInsert = function (nums, target) {
+  let length = nums.length;
+  if (target < nums[0]) return 0;
+
+  if (target > nums[length - 1]) return length;
+
+  for (let i = 0; i < nums.length; i++) {
+    if (nums[i] === target) {
+      return i;
+    }
+    if (nums[i] < target && target < nums[i + 1]) {
+      return i + 1;
+    }
+  }
+};
+//alternative method with sort
+
+// -----------------------------------------------------------------------------------
+
+/**
+   * Challenge #53. Maximum Subarray:
+   * 
+   * Given an integer array nums, find the contiguous subarray (containing at least one number) which has the largest sum and return its sum.
+  
+  A subarray is a contiguous part of an array.
+  
+  
+  an array of integers
+  begin with value of array[0]
+  counter = value
+  if array[0] + array[0 + 1] > counter --- continue looping at current iteration
+  once the condition is not met:
+  check to see if counter is > value - if greater : value = counter, if not new iteration
+  
+  return value
+  
+   */
+
+const maxSubArray = function (nums) {
+  if (nums.length === 0) return 0;
+  if (nums.length === 1) return nums;
+
+  let maxCurrent = nums[0];
+  let maxGlobal = nums[0];
+
+  for (let i = 1; i < nums.length; i++) {
+    maxCurrent = Math.max(nums[i], maxCurrent + nums[i]);
+    if (maxCurrent > maxGlobal) {
+      maxGlobal = maxCurrent;
+    }
+  }
+  return maxGlobal;
+};
