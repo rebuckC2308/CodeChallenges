@@ -23,7 +23,7 @@ Explanation: The linked-lists are:
  * want to merge two lists at a time until there is only 1 linked list remaining
  * so we will return list[0] when list.length === 1
  *
- * create a helper function mergeLists to merge each list
+ * create a helper function mergeLists to merge two lists together
  *
  * pull two lists from the list array
  * let a = list.shift();

@@ -373,25 +373,16 @@ const searchInsert = function (nums, target) {
    * Given an integer array nums, find the contiguous subarray (containing at least one number) which has the largest sum and return its sum.
   
   A subarray is a contiguous part of an array.
-  
-  
-  an array of integers
-  begin with value of array[0]
-  counter = value
-  if array[0] + array[0 + 1] > counter --- continue looping at current iteration
-  once the condition is not met:
-  check to see if counter is > value - if greater : value = counter, if not new iteration
-  
-  return value
-  
+
+Solved with Kadane's Algorithm
    */
 
 const maxSubArray = function (nums) {
   if (nums.length === 0) return 0;
   if (nums.length === 1) return nums;
 
-  let maxCurrent = nums[0];
   let maxGlobal = nums[0];
+  let maxCurrent = maxGlobal;
 
   for (let i = 1; i < nums.length; i++) {
     maxCurrent = Math.max(nums[i], maxCurrent + nums[i]);
@@ -400,4 +391,122 @@ const maxSubArray = function (nums) {
     }
   }
   return maxGlobal;
+};
+// -----------------------------------------------------------------------------------
+
+/**
+ * Challenge #66. Plus One
+ *You are given a large integer represented as an integer array digits, where each digits[i] is the ith digit of the integer. The digits are ordered from most significant to least significant in left-to-right order. The large integer does not contain any leading 0's.
+
+Increment the large integer by one and return the resulting array of digits.
+ *
+Input: digits = [1,2,3]
+Output: [1,2,4]
+Explanation: The array represents the integer 123.
+Incrementing by one gives 123 + 1 = 124.
+Thus, the result should be [1,2,4].
+ */
+
+const plusOne = function (nums) {
+  for (let i = nums.length - 1; i >= 0; i--) {
+    if (nums[i] === 9) {
+      nums[i] = 0;
+    } else {
+      nums[i] += 1;
+      return nums;
+    }
+  }
+  nums.unshift(1);
+  return nums;
+};
+
+// -----------------------------------------------------------------------------------
+/**
+Given two binary strings a and b, return their sum as a binary string.
+ */
+
+const addBinary = (a, b) => (parseInt(a, 2) + parseInt(b, 2)).toString(2);
+
+const addBinaryManual = (c, d) => {
+  let sum = "";
+  let carry = 0;
+  let i = c.length - 1;
+  let j = d.length - 1;
+
+  while (i >= 0 || j >= 0) {
+    let a = c[i] ? c[i] : "0";
+    let b = d[j] ? d[j] : "0";
+
+    sum = String(a ^ b ^ carry) + sum;
+    if (a === b && a !== String(carry)) {
+      carry = Number(!carry);
+    }
+    i--;
+    j--;
+  }
+
+  if (carry) {
+    sum = String(carry) + sum;
+  }
+  return sum;
+};
+
+// -----------------------------------------------------------------------------------
+/**
+Selected Challenge:
+448. Find All Numbers Disappeared in an Array:
+
+Given an array nums of n integers where nums[i] is in the range [1, n], return an array of all the integers in the range [1, n] that do not appear in nums.
+
+n == nums.length
+1 <= n
+1 <= nums[i] <= n
+ */
+
+const findDisappearedNums = function (nums) {
+  const n = nums.length;
+  const foundNums = [];
+
+  for (let i = 1; i < n; i++) {
+    if (!nums.includes(i)) {
+      foundNums.push(i);
+    }
+  }
+  return foundNums;
+};
+
+//Faster solution using a Set to eliminate all duplicates - still not the best for memory distribution
+
+const findDisappearedNumsUsingSet = function (nums) {
+  const numSet = new Set(nums);
+
+  const foundNums = [];
+  for (let i = 1; i <= nums.length; i++) {
+    if (!numSet.has(i)) {
+      foundNums.push(i);
+    }
+  }
+  return foundNums;
+};
+
+//To use less memory use an approach of changing the sign of each number
+//will attempt at a later time
+
+// -----------------------------------------------------------------------------------
+/**
+Challenge #69. Sqrt(x)
+
+Given a non-negative integer x, compute and return the square root of x.
+
+Since the return type is an integer, the decimal digits are truncated, and only the integer part of the result is returned.
+
+Note: You are not allowed to use any built-in exponent function or operator, such as pow(x, 0.5) or x ** 0.5.
+
+ */
+
+const mySqrt = function (x) {
+  let i = 1;
+
+  while (i * i <= x) i++;
+  return i - 1;
 };
